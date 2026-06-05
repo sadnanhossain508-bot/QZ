@@ -47,34 +47,31 @@ function registerTeacher() {
     alert('🎉 Account Registered Successfully! You can now log in using these credentials.');
 }
 
-// Updated Login System: Bypasses name prompt for student
+// Updated Login System: Bypasses name prompt for student & fixes teacher login workflow
 function login(role) {
     userRole = role;
     
     if (role === 'teacher') {
         let teacherAccounts = JSON.parse(localStorage.getItem('teacher_accounts') || '{}');
-        if (Object.keys(teacherAccounts).length === 0) {
-            alert('❌ No teacher accounts found! Please register an account first.');
-            return;
-        }
 
+        // ১. সরাসরি আইডি ইনপুট চাবে (ডাটাবেজ ফাঁকা থাকলেও আটকাবে না)
         const inputID = prompt('Enter Teacher User ID:');
         if (!inputID) return;
 
-        const storedPassword = teacherAccounts[inputID.toLowerCase()];
-        if (!storedPassword) {
-            alert('❌ Access Denied: User ID not found!');
-            return;
-        }
-
+        // ২. সরাসরি পাসওয়ার্ড ইনপুট চাবে
         const inputPassword = prompt('Enter Teacher Password:');
         if (!inputPassword) return;
 
-        if (inputPassword !== storedPassword) {
-            alert('❌ Access Denied: Incorrect Password!');
+        // ৩. এবার চেক করবে আইডিটি সিস্টেমে আছে কি না
+        const storedPassword = teacherAccounts[inputID.toLowerCase()];
+
+        // ৪. যদি আইডি না পাওয়া যায় অথবা পাসওয়ার্ড না মেলে— দুই ক্ষেত্রেই একই ভুল মেসেজ দেখাবে
+        if (!storedPassword || inputPassword !== storedPassword) {
+            alert('❌ Access Denied: Incorrect user id or password.');
             return;
         }
 
+        // ৫. আইডি ও পাসওয়ার্ড মিললে ড্যাশবোর্ড ওপেন হবে
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
         document.getElementById('teacherTabs').style.display = 'flex';
