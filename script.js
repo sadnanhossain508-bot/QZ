@@ -54,24 +54,24 @@ function login(role) {
     if (role === 'teacher') {
         let teacherAccounts = JSON.parse(localStorage.getItem('teacher_accounts') || '{}');
 
-        // ১. সরাসরি আইডি ইনপুট চাবে (ডাটাবেজ ফাঁকা থাকলেও আটকাবে না)
+        // If no data in database then it will take user i/p
         const inputID = prompt('Enter Teacher User ID:');
         if (!inputID) return;
 
-        // ২. সরাসরি পাসওয়ার্ড ইনপুট চাবে
+        // Password input from user
         const inputPassword = prompt('Enter Teacher Password:');
         if (!inputPassword) return;
 
-        // ৩. এবার চেক করবে আইডিটি সিস্টেমে আছে কি না
+        // Check ID's availability
         const storedPassword = teacherAccounts[inputID.toLowerCase()];
 
-        // ৪. যদি আইডি না পাওয়া যায় অথবা পাসওয়ার্ড না মেলে— দুই ক্ষেত্রেই একই ভুল মেসেজ দেখাবে
+        // If Id not get and incorrect password
         if (!storedPassword || inputPassword !== storedPassword) {
             alert('❌ Access Denied: Incorrect user id or password.');
             return;
         }
 
-        // ৫. আইডি ও পাসওয়ার্ড মিললে ড্যাশবোর্ড ওপেন হবে
+        // If id & pass match then it will open
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
         document.getElementById('teacherTabs').style.display = 'flex';
